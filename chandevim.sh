@@ -44,6 +44,7 @@ program_must_exist() {
         error "You must have '$program' installed to continue."
     fi
 }
+
 ## install functions
 backup() {
     local backup_files=[$1, $2, $3]
@@ -82,7 +83,10 @@ create_symlinks() {
 set_plug_manager() {
     local vim_plug_dir=$1
     local vim_plug_url=$2
-    curl -fLo  $vim_plug_dir --create-dirs $vim_plug_url
+#   curl -fLo $vim_plug_url --create-dirs $vim_plug_dir
+    curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
     local ret="$?"
     success "Vim-plug has been set up"
 }
@@ -96,7 +100,7 @@ setup_plug(){
         "+PlugClean" \
         "+qall"
     
-    export $SHELL="$shell"
+    export SHELL="$shell"
 
     success "Now vim plugs has been set up"
 }
@@ -106,6 +110,7 @@ setup_plug(){
 
 usage() {
     msg "USAGE: ./${app_name}.sh [-urh]"
+    msg "\t-i     Install the chandevim"
     msg "\t-u     Update plugs for vim"
     msg "\t-r     Remove the chandevim"
     msg "\t-h     Display this message"
@@ -115,9 +120,9 @@ install(){
     program_must_exist "vim"
     program_must_exist "curl"
      
-    backup "$HOME/.vim" \
-           "$HOME/.vimrc" \
-           "$HOME/.vim"
+    backup "$VIMRC" \
+           "$VIMRCPLUGS" \
+           "$VIM_DIR"
 
     create_symlinks "$APP_PATH" \
                     "$HOME"
