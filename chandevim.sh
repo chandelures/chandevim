@@ -87,8 +87,7 @@ create_symlinks() {
     local target_path="$2"
 
     ln_if_exit "$source_path/.vimrc" "$target_path/.vimrc"
-    ln_if_exit "$source_path/.vimrc.plugs" "$target_path/.vimrci.plugs"
-    ln_if_exit "$source_path/.vim" "$target_path/.vim"
+    ln_if_exit "$source_path/.vimrc.plugs" "$target_path/.vimrc.plugs"
 
     ret="$?"
     success "Setting up all vim symlinks."
@@ -145,12 +144,13 @@ install(){
                      "$VIM_PLUG_URL"
 
     setup_plug 
-    
-    local ret="$?"
 
-    success "Done!"
-    success "Thanks for installing $app_name."
-    
+    if [ "$ret" -eq 0 ]; then
+        success "Done!"
+        success "Thanks for installing $app_name."
+    else
+        error "Failed to install $app_name"
+    fi
 }
 
 upgrade() {
