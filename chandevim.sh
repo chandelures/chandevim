@@ -10,6 +10,8 @@ APP_PATH=`pwd`
 [ -z $VIM_PLUG_URL ] && VIM_PLUG_URL="https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
 [ -z $VIM_PLUG_DIR ] && VIM_PLUG_DIR="$HOME/.vim/autoload/plug.vim"
 
+ret=0
+
 ## basic tools
 
 msg() {
@@ -47,12 +49,12 @@ program_must_exist() {
 
 ## install functions
 backup() {
-    local backup_files=[$1, $2, $3]
+    local backup_files=($1 $2 $3)
     for backup_file in $backup_files;
     do
         [ -e "$backup_file" ] && [ ! -L "$backup_file" ] && mv -v "$backup_file" "${backup_file}.bak";
     done
-    local ret="$?"
+    ret="$?"
     success "Your original vim configruation has been backed up!"
 }
 
@@ -63,7 +65,7 @@ ln_if_exit() {
     if [ -e "$source_path" ]; then
         ln -sf "$source_path" "$target_path"
     fi
-    local ret="$?"
+    ret="$?"
     success "The symlink between $source_path and $target_path has been create"
 }
 
@@ -75,7 +77,7 @@ create_symlinks() {
     ln_if_exit "$source_path/.vimrc.plugs" "$target_path/.vimrc"
     ln_if_exit "$source_path/.vim" "$target_path/.vimrc"
 
-    local ret="$?"
+    ret="$?"
     success "Setting up all vim symlinks."
 }
 
@@ -83,10 +85,9 @@ create_symlinks() {
 set_plug_manager() {
     local vim_plug_dir=$1
     local vim_plug_url=$2
-#   curl -fLo $vim_plug_url --create-dirs $vim_plug_dir
     curl -fLo $vim_plug_dir --create-dirs \
         $vim_plug_url
-    local ret="$?"
+    ret="$?"
     success "Vim-plug has been set up"
 }
     
@@ -100,7 +101,7 @@ setup_plug(){
         "+qall"
     
     export SHELL="$shell"
-
+    ret="$?"
     success "Now vim plugs has been set up"
 }
 
@@ -127,7 +128,7 @@ install(){
     create_symlinks "$APP_PATH" \
                     "$HOME"
 
-    set_plug_manager "$VIM_PLUG_DIR"
+    set_plug_manager "$VIM_PLUG_DIR" \
                      "$VIM_PLUG_URL"
 
     setup_plug 
