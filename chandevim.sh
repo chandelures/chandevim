@@ -5,7 +5,7 @@ app_name="chandevim"
 APP_PATH=`pwd`
 [ -z $VIMRC ] && VIMRC="$HOME/.vimrc"
 [ -z $VIMRCPLUGS ] && VIMRCPLUGS="$HOME/.vimrc.plugs"
-[ -z $VIM_DIR ] && VIMDIR="$HOME/.vim"
+[ -z $VIM_DIR ] && VIM_DIR="$HOME/.vim"
 [ -z $REPO_URL ] && REPO_URL="https://github.com/chandelures/chandevim.git"
 [ -z $VIM_PLUG_URL ] && VIM_PLUG_URL="https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
 [ -z $VIM_PLUG_DIR ] && VIM_PLUG_DIR="$HOME/.vim/autoload/plug.vim"
@@ -84,9 +84,8 @@ set_plug_manager() {
     local vim_plug_dir=$1
     local vim_plug_url=$2
 #   curl -fLo $vim_plug_url --create-dirs $vim_plug_dir
-    curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-
+    curl -fLo $vim_plug_dir --create-dirs \
+        $vim_plug_url
     local ret="$?"
     success "Vim-plug has been set up"
 }
@@ -110,9 +109,10 @@ setup_plug(){
 
 usage() {
     msg "USAGE: ./${app_name}.sh [-urh]"
-    msg "\t-i     Install the chandevim"
+    msg "\t-i     Install the $app_name"
     msg "\t-u     Update plugs for vim"
-    msg "\t-r     Remove the chandevim"
+    msg "\t-g     Upgrade $app_name"
+    msg "\t-r     Remove the $app_name"
     msg "\t-h     Display this message"
 }
 
@@ -132,9 +132,27 @@ install(){
 
     setup_plug 
     
-    msg "Done!"
-    msg "\nThanks for installing $app_name."
+    local ret="$?"
+
+    success "Done!"
+    success "\nThanks for installing $app_name."
     
+}
+
+upgrade() {
+    if program_exists "git"; then
+        git pull
+    fi
+    local shell="$SHELL"
+    export SHELL='/bin/sh'
+    
+    vim \
+        "+PlugUpdate" \
+        "+PlugClean" \
+        "+qall"
+    
+    export SHELL="$shell"
+
 }
 
 remove() {
@@ -190,6 +208,11 @@ function main(){
 
             u)
                 update
+                exit 0
+                ;;
+            
+            g)
+                upgrade
                 exit 0
                 ;;
 
