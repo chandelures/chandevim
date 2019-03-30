@@ -21,13 +21,13 @@ msg() {
 success() {
     local success_message="$1"
     if [ "$ret" -eq 0 ]; then
-        msg "[sucess] ${success_message}"
+        msg "\033[32m[sucess] ${success_message}\033[0m"
     fi
 }
 
 error() {
     local error_message="$1"
-    msg "[error] ${error_message}"
+    msg "\033[31m[error] ${error_message}\033[0m"
 }
 
 program_exists() {
@@ -109,12 +109,14 @@ setup_plug(){
 ## command functions
 
 usage() {
-    msg "USAGE: ./${app_name}.sh [-urh]"
-    msg "\t-i     Install the $app_name"
-    msg "\t-u     Update plugs for vim"
-    msg "\t-g     Upgrade $app_name"
-    msg "\t-r     Remove the $app_name"
-    msg "\t-h     Display this message"
+    msg "  USAGE:"
+    msg "    ./${app_name}.sh [parameter]"
+    msg "  PARAMETER:"
+    msg "    -i  or  --install        Install the $app_name"
+    msg "    -u  or  --update-plug    Update plugs for vim"
+    msg "    -g  or  --upgrade        Upgrade the $app_name"
+    msg "    -r  or  --remove         Remove the $app_name"
+    msg "    -h  or  --help           Display this message"
 }
 
 install(){
@@ -136,13 +138,15 @@ install(){
     local ret="$?"
 
     success "Done!"
-    success "\nThanks for installing $app_name."
+    success "Thanks for installing $app_name."
     
 }
 
 upgrade() {
     if program_exists "git"; then
         git pull
+    else
+        error "git is not installed in this system"
     fi
     local shell="$SHELL"
     export SHELL='/bin/sh'
@@ -153,6 +157,8 @@ upgrade() {
         "+qall"
     
     export SHELL="$shell"
+
+    success "Upgrade repo successfully"
 
 }
 
@@ -186,22 +192,53 @@ remove() {
 
 update() {
     if program_exists "vim"; then
-        msg "Start update plugins for vim"
+        msg "Start to update plugins for vim"
         vim \
             +PlugUpdate \
             +qall
+    else
+        error "vim is not installed in this system"
     fi
 
-    msg "Update the vim plugs successfully"
+    msg "Update vim plugs successfully"
 }
 
 
 ## main
 function main(){
     local OPTIND
-    while getopts iurh OPT;
+    local OPTARG
+    while getopts iugrh-: OPT;
     do
         case $OPT in
+            -)
+                case $OPTARG in
+                    help)
+                        usage
+                        exit 0
+                        ;;
+
+                    install)
+                        install
+                        exit 0
+                        ;;
+
+                    update)
+                        update
+                        exit 0
+                        ;;
+
+                    upgrade)
+                        upgrade
+                        exit 0
+                        ;;
+                    
+                    remove)
+                        remove
+                        exit 0
+                        ;;
+                esac
+                ;;
             i)
                 install
                 exit 0
