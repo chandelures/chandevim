@@ -47,6 +47,30 @@ program_must_exist() {
     fi
 }
 
+ln_if_exit() {
+    local source_path="$1"
+    local target_path="$2"
+    
+    if [ -e "$source_path" ]; then
+        ln -sf "$source_path" "$target_path"
+    else
+        error "Failed to create the symlink between $source_path and $target_path"
+    fi
+    ret="$?"
+    success "The symlink between $source_path and $target_path has been create"
+}
+
+rm_if_exit() {
+    local rm_file="$1"
+    if [ -e "$rm_file" ]; then
+        rm -rf "$rm_file"
+    else
+        msg "$rm_file is not exits"
+    fi
+    ret="$?"
+    success "$rm_file has been deleted"
+}
+
 ## install functions
 backup() {
     local backup_files=($1 $2 $3)
@@ -58,29 +82,17 @@ backup() {
     success "Your original vim configruation has been backed up!"
 }
 
-ln_if_exit() {
-    local source_path="$1"
-    local target_path="$2"
-    
-    if [ -e "$source_path" ]; then
-        ln -sf "$source_path" "$target_path"
-    fi
-    ret="$?"
-    success "The symlink between $source_path and $target_path has been create"
-}
-
 create_symlinks() {
     local source_path="$1"
     local target_path="$2"
 
     ln_if_exit "$source_path/.vimrc" "$target_path/.vimrc"
-    ln_if_exit "$source_path/.vimrc.plugs" "$target_path/.vimrc"
-    ln_if_exit "$source_path/.vim" "$target_path/.vimrc"
+    ln_if_exit "$source_path/.vimrc.plugs" "$target_path/.vimrci.plugs"
+    ln_if_exit "$source_path/.vim" "$target_path/.vim"
 
     ret="$?"
     success "Setting up all vim symlinks."
 }
-
 
 set_plug_manager() {
     local vim_plug_dir=$1
@@ -102,9 +114,8 @@ setup_plug(){
     
     export SHELL="$shell"
     ret="$?"
-    success "Now vim plugs has been set up"
+    success "Now all vim plugs has been set up"
 }
-
 
 ## command functions
 
@@ -167,15 +178,10 @@ remove() {
     
     case $input in
         [yY][eR][sS]|[yY])
-            if test -e $VIMRC; then
-                rm $VIMRC
-            fi
-            if test -e $VIMRCPLUGS; then
-                rm $VIMRCPLUGS
-            fi
-            if test -e $VIM_DIR; then
-                rm -rf $VIM_DIR
-            fi
+            rm_if_exit $VIMRC
+            rm_if_exit $VIMRCPLUGS
+            rm_if_exit $VIM_DIR
+            echo
             msg "Thanks for using $app_name"
             exit 0
             ;;
