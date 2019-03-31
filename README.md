@@ -1,8 +1,6 @@
-[TOC]
-
 # Introduction
 
-This is a vim configration fork form spf13-vim. In order to fit my requrement, I change a lot of setting from original configration.
+This is a vim configration forked form spf13-vim. In order to fit my requrement, I change a lot of setting from original configration.
 
 This project is a distribution of vim plugs and configration of vim. It is easy to install/update the vim configration in Linux. 
 
