@@ -2,6 +2,8 @@
 
 This is a vim configration forked form spf13-vim. In order to fit my requrement, I change a lot of settings from original configration.
 
+<img src="https://github.com/chandelures/chandevim/blob/master/screenshot.png" width="500"/>
+
 This project is a distribution of vim plugs and configration of vim. It is easy to install/update the vim configration in Linux. 
 
 Now chandevim is in development phase...
