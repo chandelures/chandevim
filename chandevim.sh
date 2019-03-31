@@ -20,6 +20,7 @@ msg() {
 
 success() {
     local success_message="$1"
+
     if [ "$ret" -eq 0 ]; then
         msg "\033[32m[sucess] ${success_message}\033[0m"
     fi
@@ -27,6 +28,7 @@ success() {
 
 error() {
     local error_message="$1"
+
     msg "\033[31m[error] ${error_message}\033[0m"
 }
 
@@ -41,6 +43,7 @@ program_exists() {
 
 program_must_exist() {
     local program="$1"
+
     program_exists $program
     if [ "$?" -ne 0 ]; then
         error "You must have '$program' installed to continue."
@@ -62,6 +65,7 @@ ln_if_exit() {
 
 rm_if_exit() {
     local rm_file="$1"
+
     if [ -e "$rm_file" ]; then
         rm -rf "$rm_file"
     else
@@ -96,8 +100,10 @@ create_symlinks() {
 set_plug_manager() {
     local vim_plug_dir=$1
     local vim_plug_url=$2
-    curl -fLo $vim_plug_dir --create-dirs \
-        $vim_plug_url
+    if program_exists 'curl'; then
+        curl -fLo $vim_plug_dir --create-dirs \
+            $vim_plug_url
+    fi
     ret="$?"
     success "Vim-plug has been set up"
 }
@@ -129,7 +135,7 @@ usage() {
     msg "    -h  or  --help           Display this message"
 }
 
-install(){
+install() {
     program_must_exist "vim"
     program_must_exist "curl"
      
@@ -223,22 +229,18 @@ function main(){
                         usage
                         exit 0
                         ;;
-
                     install)
                         install
                         exit 0
                         ;;
-
                     update)
                         update
                         exit 0
                         ;;
-
                     upgrade)
                         upgrade
                         exit 0
                         ;;
-                    
                     remove)
                         remove
                         exit 0
@@ -249,27 +251,22 @@ function main(){
                 install
                 exit 0
                 ;;
-
             u)
                 update
                 exit 0
                 ;;
-            
             g)
                 upgrade
                 exit 0
                 ;;
-
             h)
                 usage
                 exit 0
                 ;;
-
             r)
                 remove
                 exit 0
                 ;;
-
             \?)
                 usage
                 exit 1
