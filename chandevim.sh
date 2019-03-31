@@ -1,11 +1,8 @@
 #!/bin/bash
 
-## params
+## parameters
 app_name="chandevim"
 APP_PATH=`pwd`
-[ -z $VIMRC ] && VIMRC="$HOME/.vimrc"
-[ -z $VIMRCPLUGS ] && VIMRCPLUGS="$HOME/.vimrc.plugs"
-[ -z $VIM_DIR ] && VIM_DIR="$HOME/.vim"
 [ -z $REPO_URL ] && REPO_URL="https://github.com/chandelures/chandevim.git"
 [ -z $VIM_PLUG_URL ] && VIM_PLUG_URL="https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
 [ -z $VIM_PLUG_DIR ] && VIM_PLUG_DIR="$HOME/.vim/autoload/plug.vim"
@@ -30,6 +27,15 @@ error() {
     local error_message="$1"
 
     msg "\033[31m[error] ${error_message}\033[0m"
+}
+
+home_exist() {
+    local home="$1"
+
+    if [ ! $home ]; then
+        error 'You do not have the $HOME enviromental variable.'
+        exit 0
+    fi
 }
 
 program_exists() {
@@ -124,24 +130,14 @@ setup_plug(){
 
 ## command functions
 
-usage() {
-    msg "  USAGE:"
-    msg "    ./${app_name}.sh [parameter]"
-    msg "  PARAMETER:"
-    msg "    -i  or  --install        Install the $app_name"
-    msg "    -u  or  --update-plug    Update plugs for vim"
-    msg "    -g  or  --upgrade        Upgrade the $app_name"
-    msg "    -r  or  --remove         Remove the $app_name"
-    msg "    -h  or  --help           Display this message"
-}
-
 install() {
     program_must_exist "vim"
     program_must_exist "curl"
+    home_existe "$HOME"
      
-    backup "$VIMRC" \
-           "$VIMRCPLUGS" \
-           "$VIM_DIR"
+    backup "$HOME/.vimrc" \
+           "$HOME/.vimrc.plugs" \
+           "$HOME/.vim"
 
     create_symlinks "$APP_PATH" \
                     "$HOME"
@@ -184,9 +180,9 @@ remove() {
     
     case $input in
         [yY][eR][sS]|[yY])
-            rm_if_exit $VIMRC
-            rm_if_exit $VIMRCPLUGS
-            rm_if_exit $VIM_DIR
+            rm_if_exit $HOME/.vimrc
+            rm_if_exit $HOME/.vimrc.plugs
+            rm_if_exit $HOME/.vim
             echo
             msg "Thanks for using $app_name"
             exit 0
@@ -215,6 +211,16 @@ update() {
     msg "Update vim plugs successfully"
 }
 
+usage() {
+    msg "  USAGE:"
+    msg "    ./${app_name}.sh [parameter]"
+    msg "  PARAMETER:"
+    msg "    -i  or  --install        Install the $app_name"
+    msg "    -u  or  --update         Update plugs for vim"
+    msg "    -g  or  --upgrade        Upgrade the $app_name"
+    msg "    -r  or  --remove         Remove the $app_name"
+    msg "    -h  or  --help           Display this message"
+}
 
 ## main
 function main(){
