@@ -1,4 +1,5 @@
-# Introduction
+# Chandevim
+## Introduction
 
 This is a vim configration forked form [spf13-vim](<https://github.com/spf13/spf13-vim>). In order to fit my requrement, I change a lot of settings from original configration.
 
@@ -6,13 +7,13 @@ The project is a distribution of vim plugs and configration of vim. It is easy t
 
 Now [chandevim](https://github/chandelures/chandevim.git) is in development phase...
 
-# Screenshot
+## Screenshot
 
 <img src="./screenshot.png" width="500" alt="screenshot"/>
 
-# Install
+## Install
 
-## Linux
+### Linux
 
 ```shell
 git clone https://github.com/chandelures/chandevim.git
@@ -20,44 +21,44 @@ cd chandevim
 ./chandevim.sh --install
 ```
 
-# Usage
+## Usage
 
-## Help
+### Help
 
-### Linux
+#### Linux
 
 ```shell
 cd chandevim
 ./chandevim.sh --help
 ```
 
-## Upgrade
+### Upgrade
 
-### Linux
+#### Linux
 
 ```shell
 cd chandevim
 ./chandevim.sh --upgrade
 ```
 
-## Update Plugins
+### Update Plugins
 
-### Linux
+#### Linux
 
 ```shell
 cd chandevim
 ./chandevim.sh --update
 ```
 
-Or
+Or Manually
 
 ```shell
 vim +PlugUpdate +qall
 ```
 
-## Uninstall
+### Uninstall
 
-### Linux
+#### Linux
 
 ```shell
 cd chandevim
