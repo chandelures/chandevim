@@ -81,6 +81,18 @@ rm_if_exit() {
     success "$rm_file has been deleted"
 }
 
+vim_operation() {
+    local shell="$SHELL"
+    export SHELL='/bin/sh'
+    
+    vim \
+        "+Plug$1" \
+        "+PlugClean" \
+        "+qall"
+    
+    export SHELL="$shell"
+}
+
 ## install functions
 backup() {
     local backup_files=($1 $2 $3)
@@ -115,15 +127,7 @@ set_plug_manager() {
 }
     
 setup_plug(){
-    local shell="$SHELL"
-    export SHELL='/bin/sh'
-    
-    vim \
-        "+PlugInstall" \
-        "+PlugClean" \
-        "+qall"
-    
-    export SHELL="$shell"
+    vim_operation "Install"
     ret="$?"
     success "Now all vim plugs has been set up"
 }
@@ -131,6 +135,8 @@ setup_plug(){
 ## command functions
 
 install() {
+    msg "Start to install $app_name"
+
     program_must_exist "vim"
     program_must_exist "curl"
     home_existe "$HOME"
@@ -161,15 +167,7 @@ upgrade() {
     else
         error "git is not installed in this system"
     fi
-    local shell="$SHELL"
-    export SHELL='/bin/sh'
-    
-    vim \
-        "+PlugUpdate" \
-        "+PlugClean" \
-        "+qall"
-    
-    export SHELL="$shell"
+    vim_operation "Update"
 
     success "Upgrade repo successfully"
 
@@ -180,6 +178,7 @@ remove() {
     
     case $input in
         [yY][eR][sS]|[yY])
+            msg "Start to remove $app_name"
             rm_if_exit $HOME/.vimrc
             rm_if_exit $HOME/.vimrc.plugs
             rm_if_exit $HOME/.vim
@@ -201,9 +200,7 @@ remove() {
 update() {
     if program_exists "vim"; then
         msg "Start to update plugins for vim"
-        vim \
-            +PlugUpdate \
-            +qall
+        vim_operation "Update"
     else
         error "vim is not installed in this system"
     fi
@@ -249,6 +246,10 @@ function main(){
                         ;;
                     remove)
                         remove
+                        exit 0
+                        ;;
+                    \?)
+                        usage
                         exit 0
                         ;;
                 esac

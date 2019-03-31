@@ -2,7 +2,7 @@
 
 This is a vim configration forked form [spf13-vim](<https://github.com/spf13/spf13-vim>). In order to fit my requrement, I change a lot of settings from original configration.
 
-This project is a distribution of vim plugs and configration of vim. It is easy to install/update/uninstall the vim configration in Linux. 
+The project is a distribution of vim plugs and configration of vim. It is easy to install/update/uninstall the vim configration in Linux. 
 
 Now [chandevim](https://github/chandelures/chandevim.git) is in development phase...
 
@@ -20,27 +20,29 @@ cd chandevim
 ./chandevim.sh --install
 ```
 
-# Help
+# Usage
 
-## Linux
+## Help
+
+### Linux
 
 ```shell
 cd chandevim
 ./chandevim.sh --help
 ```
 
-# Upgrade
+## Upgrade
 
-## Linux
+### Linux
 
 ```shell
 cd chandevim
 ./chandevim.sh --upgrade
 ```
 
-# Update Plugins
+## Update Plugins
 
-## Linux
+### Linux
 
 ```shell
 cd chandevim
@@ -53,9 +55,9 @@ Or
 vim +PlugUpdate +qall
 ```
 
-# Uninstall
+## Uninstall
 
-## Linux
+### Linux
 
 ```shell
 cd chandevim
