@@ -1,9 +1,9 @@
 # Chandevim
 ## Introduction
 
-This is a vim configration forked form [spf13-vim](<https://github.com/spf13/spf13-vim>). In order to fit my requrement, I change a lot of settings from original configration.
+This is a vim configuration forked form [spf13-vim](<https://github.com/spf13/spf13-vim>). In order to fit my requrment, I change a lot of settings from original configuration.
 
-The project is a distribution of vim plugs and configration of vim. It is easy to install/update/uninstall the vim configration in Linux. 
+The project is a distribution of vim plugs and configuration of vim. It is easy to install/update/remove the vim configuration in Linux. 
 
 Now [chandevim](https://github/chandelures/chandevim.git) is in development phase...
 

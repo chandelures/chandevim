@@ -37,8 +37,6 @@
 
 
 " General {
-    " 不兼容vi模式
-    set nocompatible
     " 菜单设置
     set langmenu=zh_CN.UTF-8
     if v:version >= 603
@@ -93,9 +91,6 @@
 	set number
 	" 设置标尺
 	set ruler
-    " 设置屏幕大小
-    set lines=40
-    set columns=100
     " 设置行间距
     set linespace=0
 	" 不要闪烁
