@@ -178,6 +178,7 @@
 
     " Coc.nvim {
         if isdirectory(expand("~/.vim/plugged/coc.nvim"))
+            let g:coc_disable_startup_warning = 1
             " 映射Tab触发自动补全
             inoremap <silent><expr> <TAB>
                 \ pumvisible() ? "\<C-n>" :
@@ -191,9 +192,11 @@
             endfunction
 
             " 映射enter选择补全
-            inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
-                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-
+            if exists('*complete_info')
+                inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+            else
+                inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+            endif
         endif
     " }
 
@@ -207,7 +210,6 @@
                 \ 'executable' : 'latexmk',
                 \ 'options' : [
                 \   '-xelatex',
-                \   '-file-line-error',
                 \   '-synctex=1',
                 \   '-verbose',
                 \   '-interaction=nonstopmode',
