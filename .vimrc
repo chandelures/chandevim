@@ -21,7 +21,7 @@
 
     " Snippet {
         " Plug 'SirVer/ultisnips'
-        " Plug 'honza/vim-snippets'
+        Plug 'honza/vim-snippets'
     " }
 
     " AutoFormat {
@@ -191,32 +191,28 @@
             endfunction
 
             " 映射enter选择补全
-            if exists('*complete_info')
-                inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
-            else
-                inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-            endif
+            inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
         endif
     " }
 
     " Vimtex {
-        if isdirectory(expand("~/.vim/plugged/vim-autoformat"))
+        if isdirectory(expand("~/.vim/plugged/vimtex"))
+            noremap <leader>c :VimtexCompile<CR>
             let g:tex_flavor = 'latex'
             let g:vimtex_view_general_viewer = 'okular'
-            " let g:vimtex_compliler_progname = 'xelatex'
 
             let g:vimtex_compiler_latexmk = {
-                \ 'build_dir' : '',
-                \ 'callback' : 1,
-                \ 'continuous' : 1,
                 \ 'executable' : 'latexmk',
-                \ 'hooks' : [],
                 \ 'options' : [
                 \   '-xelatex',
+                \   '-file-line-error',
                 \   '-synctex=1',
+                \   '-verbose',
                 \   '-interaction=nonstopmode',
-                \]
-            \}
+                \ ],
+                \ }
         endif
     " }
 
@@ -224,7 +220,7 @@
         if isdirectory(expand("~/.vim/plugged/vim-autoformat"))
             noremap <leader>a :Autoformat<CR>
             auto BufWrite * :Autoformat
-            autocmd filetype vim,tex let b:autoformat_autoindent=0
+            autocmd filetype vim,tex,markdown let b:autoformat_autoindent=0
         endif
     " }
 " }
