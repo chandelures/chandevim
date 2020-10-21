@@ -27,6 +27,7 @@ create_symlinks() {
     local target_path="$2"
 
     ln -sf "$source_path/.vimrc" "$target_path/.vimrc"
+    ln -sf "$source_path/.vimrc.plugin" "$target_path/.vimrc"
 }
 
 program_not_exists() {
@@ -55,6 +56,8 @@ install_plug_mgr() {
         mkdir -p "$plug_mgr_dir"
         cp "$APP_PATH/vim-plug/plug.vim" "$plug_mgr_dir"
     fi
+
+    rm -rf $plug_mgr_name
 }
 
 install_plug() {
@@ -96,7 +99,7 @@ install() {
     fi
 
     backup "$HOME/.vimrc" \
-        "$HOME/.vimrc.plugs" \
+        "$HOME/.vimrc.plugin" \
         "$HOME/.vim"
 
     create_symlinks "$APP_PATH" \
@@ -109,8 +112,8 @@ install() {
     install_plug
 }
 
-## upgrade
-upgrade() {
+## update
+update() {
     if program_not_exists 'vim'; then
         msg "You don't have vim."
     fi
@@ -130,6 +133,7 @@ remove() {
     case $input in
         [yY][eR][sS]|[yY])
             rm -f $HOME/.vimrc
+            rm -f $HOME/.vimrc.plugin
             rm -rf $HOME/.vim
             exit 0
             ;;
@@ -157,13 +161,17 @@ main(){
                         install
                         exit 0
                         ;;
-                    upgrade)
+                    update)
                         upgrade
                         exit 0
                         ;;
                     remove)
                         remove
                         exit 0
+                        ;;
+
+                    \?)
+                        exit 1
                         ;;
                 esac
                 ;;
@@ -172,12 +180,15 @@ main(){
                 exit 0
                 ;;
             u)
-                upgrade
+                update
                 exit 0
                 ;;
             r)
                 remove
                 exit 0
+                ;;
+            \?)
+                exit 1
                 ;;
         esac
     done
