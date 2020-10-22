@@ -23,11 +23,8 @@ backup() {
 }
 
 create_symlinks() {
-    local source_path="$1"
-    local target_path="$2"
-
-    ln -sf "$source_path/.vimrc" "$target_path/.vimrc"
-    ln -sf "$source_path/.vimrc.plugin" "$target_path/.vimrc.plugin"
+    ln -sf "$APP_PATH/.vimrc" "$HOME/.vimrc"
+    ln -sf "$APP_PATH/.vimrc.plugin" "$HOME/.vimrc.plugin"
 }
 
 program_not_exists() {
@@ -42,9 +39,9 @@ program_not_exists() {
 }
 
 install_plug_mgr() {
-    local plug_mgr_name=$1
-    local plug_mgr_dir=$2
-    local plug_mgr_url=$3
+    local plug_mgr_name=$VIM_PLUG_NAME
+    local plug_mgr_dir=$VIM_PLUG_DIR
+    local plug_mgr_url=$VIM_PLUG_URL
 
     if [ ! -e "$plug_mgr_name" ]; then
         git clone $plug_mgr_url
@@ -102,12 +99,9 @@ install() {
         "$HOME/.vimrc.plugin" \
         "$HOME/.vim"
 
-    create_symlinks "$APP_PATH" \
-        "$HOME"
+    create_symlinks
 
-    install_plug_mgr "$VIM_PLUG_NAME" \
-        "$VIM_PLUG_DIR" \
-        "$VIM_PLUG_URL"
+    install_plug_mgr
 
     install_plug
 }
