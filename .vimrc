@@ -147,6 +147,12 @@
             let g:airline_right_sep='‹'
         endif
     " }
+    
+    " Rainbow{
+        if isdirectory(expand("~/.vim/plugged/rainbow"))
+            let g:rainbow_active = 1
+        endif
+    " }
 
     " Coc.nvim {
         if isdirectory(expand("~/.vim/plugged/coc.nvim"))
@@ -191,11 +197,12 @@
         endif
     " }
 
-    " Auto-format {
-        if isdirectory(expand("~/.vim/plugged/vim-autoformat"))
-            noremap <leader>a :Autoformat<CR>
-            auto BufWrite * :Autoformat
-            autocmd filetype vim,tex,markdown let b:autoformat_autoindent=0
+    " NeoFormat {
+        if isdirectory(expand("~/.vim/plugged/neoformat"))
+            augroup fmt
+                autocmd!
+                autocmd BufWritePre * undojoin | Neoformat
+            augroup END
         endif
     " }
 " }

@@ -6,16 +6,19 @@
         Plug 'rafi/awesome-vim-colorschemes'
         Plug 'vim-airline/vim-airline'
         Plug 'vim-airline/vim-airline-themes'
-        Plug 'honza/vim-snippets'
-        Plug 'Chiel92/vim-autoformat', {'branch': 'master', 'do': 'pip install pynvim'}
-        Plug 'neoclide/coc.nvim', {'branch': 'release'}
+        Plug 'luochen1990/rainbow'
+        Plug 'tpope/vim-surround'
     " }
 
-    " AutoComplete {}
+    " Code {
+        Plug 'neoclide/coc.nvim', {'branch': 'release'}
+        Plug 'honza/vim-snippets'
+        Plug 'sbdchd/neoformat'
+        Plug 'tpope/vim-fugitive'
+        Plug 'sheerun/vim-polyglot'
     " }
 
     " Snippet {
-        " Plug 'SirVer/ultisnips'
     " }
 
     " Vimtex {
