@@ -177,7 +177,7 @@ main(){
                         exit 0
                         ;;
                     update)
-                        upgrade
+                        update
                         exit 0
                         ;;
                     remove)
