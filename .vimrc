@@ -176,6 +176,12 @@
         endif
     " }
 
+    " Vim-Markdown {
+        if isdirectory(expand("~/.vim/plugged/vim-markdown"))
+            let g:vim_markdown_math = 1
+        endif
+    " }
+
     " Vimtex {
         if isdirectory(expand("~/.vim/plugged/vimtex"))
             noremap <leader>c :VimtexCompile<CR>

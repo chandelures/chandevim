@@ -1,5 +1,6 @@
 " Plugins Setup {
     call plug#begin('~/.vim/plugged')
+
     " General {
         Plug 'scrooloose/nerdtree'
         Plug 'jiangmiao/auto-pairs'
@@ -17,20 +18,25 @@
         Plug 'tpope/vim-fugitive'
         Plug 'sheerun/vim-polyglot'
     " }
-
-    " Snippet {
+    
+    " Markdown {
+        Plug 'godlygeek/tabular'
+        Plug 'plasticboy/vim-markdown'
+        Plug 'mzlogin/vim-markdown-toc'
+        Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
     " }
 
-    " Vimtex {
+    " Tex {
         Plug 'lervag/vimtex'
     " }
 
     " Search {
-        " Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
+        Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
     " }
+    
     call plug#end()
 " }
-"
+
 " Custom Config {
     if filereadable(expand("~/.vimrc.plugin.custom"))
         source ~/.vimrc.plugin.custom
