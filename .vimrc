@@ -114,9 +114,6 @@
 
 " Mappings {
     let mapleader = ','
-
-    " 快速进行文件保存、退出
-    nnoremap w!! w !sudo tee % >/dev/null
 " }
 
 " Plugins Config{
