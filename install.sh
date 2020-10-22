@@ -85,14 +85,17 @@ update_plug() {
 install() {
     if program_not_exists 'curl'; then
         msg "You don't have curl."
+        return
     fi
 
     if program_not_exists 'vim'; then
         msg "You don't have vim."
+        return 
     fi
 
     if program_not_exists 'git'; then
         msg "You don't have git."
+        return
     fi
 
     backup "$HOME/.vimrc" \
@@ -110,10 +113,12 @@ install() {
 update() {
     if program_not_exists 'vim'; then
         msg "You don't have vim."
+        return 
     fi
 
     if program_not_exists 'git'; then
         msg "You don't have git."
+        return 
     fi
 
     git pull
