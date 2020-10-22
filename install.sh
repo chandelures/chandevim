@@ -154,9 +154,9 @@ remove() {
 
 ##
 usage() {
-    msg "  USAGE:"
+    msg "USAGE:"
     msg "    ./install.sh [parameter]"
-    msg "  PARAMETER:"
+    msg "PARAMETER:"
     msg "    -i  or  --install        Install the $app_name"
     msg "    -u  or  --update         Update the $app_name"
     msg "    -r  or  --remove         Remove the $app_name"
@@ -167,11 +167,15 @@ usage() {
 main(){
     local OPTIND
     local OPTARG
-    while getopts iur-: OPT;
+    while getopts ihur-: OPT;
     do
         case $OPT in
             -)
                 case $OPTARG in
+                    help)
+                        usage
+                        exit 0
+                        ;;
                     install)
                         install
                         exit 0
@@ -190,6 +194,10 @@ main(){
                         exit 1
                         ;;
                 esac
+                ;;
+            h)
+                usage
+                exit 0
                 ;;
             i)
                 install
