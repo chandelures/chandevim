@@ -31,7 +31,7 @@
     " }
 
     " Search {
-        Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
+        " Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
     " }
     
     call plug#end()
