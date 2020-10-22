@@ -25,6 +25,10 @@ backup() {
 create_symlinks() {
     ln -sf "$APP_PATH/.vimrc" "$HOME/.vimrc"
     ln -sf "$APP_PATH/.vimrc.plugin" "$HOME/.vimrc.plugin"
+    if [ ! -e "$HOME/.vim" ];then
+        mkdir "$HOME/.vim"
+    fi
+    cp "$APP_PATH/coc-setting.json" "$HOME/.vim/coc-setting.json"
 }
 
 program_not_exists() {
@@ -122,6 +126,7 @@ update() {
     fi
 
     git pull
+
     update_plug
 }
 
@@ -147,6 +152,17 @@ remove() {
     esac
 }
 
+##
+usage() {
+    msg "  USAGE:"
+    msg "    ./install.sh [parameter]"
+    msg "  PARAMETER:"
+    msg "    -i  or  --install        Install the $app_name"
+    msg "    -u  or  --update         Update the $app_name"
+    msg "    -r  or  --remove         Remove the $app_name"
+    msg "    -h  or  --help           Display this message"
+}
+
 ## main
 main(){
     local OPTIND
@@ -169,7 +185,8 @@ main(){
                         exit 0
                         ;;
 
-                    \?)
+                    *)
+                        usage
                         exit 1
                         ;;
                 esac
@@ -187,6 +204,7 @@ main(){
                 exit 0
                 ;;
             \?)
+                usage
                 exit 1
                 ;;
         esac
