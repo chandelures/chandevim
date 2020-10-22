@@ -27,7 +27,7 @@ create_symlinks() {
     local target_path="$2"
 
     ln -sf "$source_path/.vimrc" "$target_path/.vimrc"
-    ln -sf "$source_path/.vimrc.plugin" "$target_path/.vimrc"
+    ln -sf "$source_path/.vimrc.plugin" "$target_path/.vimrc.plugin"
 }
 
 program_not_exists() {
