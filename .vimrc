@@ -144,7 +144,7 @@
             let g:airline_right_sep='‹'
         endif
     " }
-    
+
     " Rainbow{
         if isdirectory(expand("~/.vim/plugged/rainbow"))
             let g:rainbow_active = 1
@@ -156,9 +156,9 @@
             let g:coc_disable_startup_warning = 1
             " 映射Tab触发自动补全
             inoremap <silent><expr> <TAB>
-                \ pumvisible() ? "\<C-n>" :
-                \ <SID>check_back_space() ? "\<TAB>" :
-                \ coc#refresh()
+                        \ pumvisible() ? "\<C-n>" :
+                        \ <SID>check_back_space() ? "\<TAB>" :
+                        \ coc#refresh()
             inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
             function! s:check_back_space() abort
@@ -169,7 +169,7 @@
             " 映射enter选择补全
             if exists('*complete_info')
                 inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
-                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+                            \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
             else
                 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
             endif
@@ -189,23 +189,22 @@
             let g:vimtex_view_general_viewer = 'okular'
 
             let g:vimtex_compiler_latexmk = {
-                \ 'executable' : 'latexmk',
-                \ 'options' : [
-                \   '-xelatex',
-                \   '-synctex=1',
-                \   '-verbose',
-                \   '-interaction=nonstopmode',
-                \ ],
-                \ }
+                        \ 'executable' : 'latexmk',
+                        \ 'options' : [
+                        \   '-xelatex',
+                        \   '-synctex=1',
+                        \   '-verbose',
+                        \   '-interaction=nonstopmode',
+                        \ ],
+                        \ }
         endif
     " }
 
-    " NeoFormat {
-        if isdirectory(expand("~/.vim/plugged/neoformat"))
-            augroup fmt
-                autocmd!
-                autocmd BufWritePre * undojoin | Neoformat
-            augroup END
+    " Autoformat {
+        if isdirectory(expand("~/.vim/plugged/vim-autoformat"))
+            noremap <leader>l :Autoformat<CR>
+            autocmd FileType vim,tex,json let b:autoformat_autoindent=0
+            au BufWrite * :Autoformat
         endif
     " }
 " }

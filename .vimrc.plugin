@@ -14,7 +14,7 @@
     " Code {
         Plug 'neoclide/coc.nvim', {'branch': 'release'}
         Plug 'honza/vim-snippets'
-        Plug 'sbdchd/neoformat'
+        Plug 'Chiel92/vim-autoformat'
         Plug 'tpope/vim-fugitive'
         Plug 'sheerun/vim-polyglot'
     " }
