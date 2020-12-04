@@ -29,6 +29,7 @@ create_symlinks() {
     fi
 
     ln -sf "$APP_PATH/vimrc" "$VIM_DIR/vimrc"
+    ln -sf "$APP_PATH/vimrc.custom" "$VIM_DIR/vimrc.custom"
     ln -sf "$APP_PATH/vimrc.plugin" "$VIM_DIR/vimrc.plugin"
 
     if [ $? -ne 0 ]; then
