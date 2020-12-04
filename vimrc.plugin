@@ -1,37 +1,50 @@
 " Plugins Setup {
     call plug#begin('~/.vim/plugged')
 
+    if !exists('g:plug_group')
+        let g:plug_group=['general', 'programming']
+    endif
+
     " General {
-        Plug 'scrooloose/nerdtree'
-        Plug 'jiangmiao/auto-pairs'
-        Plug 'rafi/awesome-vim-colorschemes'
-        Plug 'vim-airline/vim-airline'
-        Plug 'vim-airline/vim-airline-themes'
-        Plug 'luochen1990/rainbow'
-        Plug 'tpope/vim-surround'
+        if count(g:plug_group, 'general')
+            Plug 'scrooloose/nerdtree'
+            Plug 'jiangmiao/auto-pairs'
+            Plug 'rafi/awesome-vim-colorschemes'
+            Plug 'vim-airline/vim-airline'
+            Plug 'vim-airline/vim-airline-themes'
+            Plug 'luochen1990/rainbow'
+            Plug 'tpope/vim-surround'
+        endif
     " }
 
-    " Code {
-        Plug 'neoclide/coc.nvim', {'branch': 'release'}
-        Plug 'honza/vim-snippets'
-        Plug 'Chiel92/vim-autoformat'
-        Plug 'tpope/vim-fugitive'
-        " Plug 'sheerun/vim-polyglot'
+    " Programming {
+        if count(g:plug_group, 'programming')
+            Plug 'neoclide/coc.nvim', {'branch': 'release'}
+            Plug 'honza/vim-snippets'
+            Plug 'Chiel92/vim-autoformat'
+            Plug 'tpope/vim-fugitive'
+        endif
     " }
 
     " Markdown {
-        Plug 'godlygeek/tabular'
-        Plug 'plasticboy/vim-markdown'
-        Plug 'mzlogin/vim-markdown-toc'
-        Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+        if count(g:plug_group, 'markdown')
+            Plug 'godlygeek/tabular'
+            Plug 'plasticboy/vim-markdown'
+            Plug 'mzlogin/vim-markdown-toc'
+            Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+        endif
     " }
 
     " Tex {
-        Plug 'lervag/vimtex'
+        if count(g:plug_group, 'tex')
+            Plug 'lervag/vimtex'
+        endif
     " }
 
     " Search {
-        " Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
+        if count(g:plug_group, 'search')
+            Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
+        endif
     " }
 
     call plug#end()

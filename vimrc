@@ -4,6 +4,11 @@
     " 设置默认shell
     set shell=/bin/sh
 
+    " Custom
+    if filereadable(expand("~/.vim/vimrc.custom"))
+        source ~/.vim/vimrc.custom
+    endif
+
     " Plugins
     if filereadable(expand("~/.vim/vimrc.plugin"))
         source ~/.vim/vimrc.plugin
@@ -43,8 +48,10 @@
     " 关闭声音
     set noeb
     set vb
+    " 设置粘贴
+    set paste
     " 设置备份
-    set backup
+    set nobackup
 
     " 自动跳转到上次修改的位置
     if has("autocmd")

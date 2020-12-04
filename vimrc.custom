@@ -1,0 +1,5 @@
+" Custom Config
+"
+" plug config
+" options: general, programming, markdown, tex, search
+let g:plug_group=['general', 'programming']
