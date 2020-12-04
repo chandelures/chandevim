@@ -4,9 +4,9 @@
 app_name="chandevim"
 APP_PATH=`pwd`
 REPO_URL="https://github.com/chandelures/chandevim.git"
-VIM_PLUG_URL="https://github.com/junegunn/vim-plug"
-VIM_PLUG_NAME="vim-plug"
-VIM_PLUG_DIR="$HOME/.vim/autoload/"
+VIM_PLUG_INSTALL_URL="https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+VIM_PLUG_DIR="$HOME/.vim/autoload"
+VIM_DIR="$HOME/.vim"
 
 ## basic function
 msg() {
@@ -16,6 +16,7 @@ msg() {
 ## tools
 backup() {
     local backup_files=("#@")
+
     for backup_file in $backup_files;
     do
         [ -e "$backup_file" ] && [ ! -L "$backup_file" ] && mv -v "$backup_file" "${backup_file}.bak";
@@ -23,12 +24,20 @@ backup() {
 }
 
 create_symlinks() {
-    ln -sf "$APP_PATH/.vimrc" "$HOME/.vimrc"
-    ln -sf "$APP_PATH/.vimrc.plugin" "$HOME/.vimrc.plugin"
+
     if [ ! -e "$HOME/.vim" ];then
         mkdir "$HOME/.vim"
     fi
-    cp "$APP_PATH/coc-setting.json" "$HOME/.vim/coc-setting.json"
+
+    ln -sf "$APP_PATH/vimrc" "$VIM_DIR/vimrc"
+    ln -sf "$APP_PATH/vimrc.plugin" "$VIM_DIR/vimrc.plugin"
+
+    if [ $? -ne 0 ]; then
+        msg "Create symbol links Failed!"
+        exit 1
+    fi
+
+    msg "Create symbol links Successful!"
 }
 
 program_not_exists() {
@@ -43,22 +52,17 @@ program_not_exists() {
 }
 
 install_plug_mgr() {
-    local plug_mgr_name=$VIM_PLUG_NAME
-    local plug_mgr_dir=$VIM_PLUG_DIR
-    local plug_mgr_url=$VIM_PLUG_URL
+    local flag=$1 || ""
 
-    if [ ! -e "$plug_mgr_name" ]; then
-        git clone $plug_mgr_url
+    curl $flag -fLo "$VIM_PLUG_DIR/plug.vim" --create-dirs $VIM_PLUG_INSTALL_URL
+
+    if [ $? -ne 0 ]; then
+        msg "Install plug manager Failed!"
+        exit 1
     fi
 
-    if [ -e "$plug_mgr_dir" ]; then
-        cp "$APP_PATH/vim-plug/plug.vim" "$plug_mgr_dir"
-    else
-        mkdir -p "$plug_mgr_dir"
-        cp "$APP_PATH/vim-plug/plug.vim" "$plug_mgr_dir"
-    fi
+    msg "Install plug manager Successful!"
 
-    rm -rf $plug_mgr_name
 }
 
 install_plug() {
@@ -69,6 +73,13 @@ install_plug() {
         "+PlugInstall" \
         "+PlugClean" \
         "+qall"
+
+    if [ $? -ne 0 ]; then
+        msg "Install plugins Failed!"
+        exit 1
+    fi
+
+    msg "Install plugins Successful!"
 
     export SHELL="$shell"
 }
@@ -87,6 +98,8 @@ update_plug() {
 
 ## install
 install() {
+    local proxy_flag=$1 || ""
+
     if program_not_exists 'curl'; then
         msg "You don't have curl."
         return
@@ -94,7 +107,7 @@ install() {
 
     if program_not_exists 'vim'; then
         msg "You don't have vim."
-        return 
+        return
     fi
 
     if program_not_exists 'git'; then
@@ -102,42 +115,42 @@ install() {
         return
     fi
 
-    backup "$HOME/.vimrc" \
-        "$HOME/.vimrc.plugin" \
-        "$HOME/.vim"
+    backup "$HOME/.vim"
+
+    install_plug_mgr "$proxy_flag"
 
     create_symlinks
 
-    install_plug_mgr
-
     install_plug
+
+    msg "Done."
 }
 
 ## update
 update() {
     if program_not_exists 'vim'; then
         msg "You don't have vim."
-        return 
+        return
     fi
 
     if program_not_exists 'git'; then
         msg "You don't have git."
-        return 
+        return
     fi
 
     git pull
 
     update_plug
+
+    msg "Done."
 }
 
 ## remove
 remove() {
-    read -r -p "Do you really want to remove the $app_name? [Y/n]" input
+    read -r -p "Do you really want to remove the $app_name? [Y/n] " input
 
     case $input in
         [yY][eR][sS]|[yY])
-            rm -f $HOME/.vimrc
-            rm -f $HOME/.vimrc.plugin
             rm -rf $HOME/.vim
             exit 0
             ;;
@@ -150,6 +163,8 @@ remove() {
             exit 1
             ;;
     esac
+
+    msg "Done."
 }
 
 ##
@@ -157,50 +172,37 @@ usage() {
     msg "USAGE:"
     msg "    ./install.sh [parameter]"
     msg "PARAMETER:"
-    msg "    -i  or  --install        Install the $app_name"
-    msg "    -u  or  --update         Update the $app_name"
-    msg "    -r  or  --remove         Remove the $app_name"
-    msg "    -h  or  --help           Display this message"
+    msg "    -i        Install the $app_name"
+    msg "    -u        Update the $app_name"
+    msg "    -r        Remove the $app_name"
+    msg "    -h        Display this message"
+    msg "    -p        Proxy setting"
+    msg ""
+    msg "https://github.com/chandelures/chandevim"
 }
 
 ## main
 main(){
     local OPTIND
     local OPTARG
-    while getopts ihur-: OPT;
+
+    local proxy_flag=""
+
+    while getopts ihurp:-: OPT;
     do
         case $OPT in
-            -)
-                case $OPTARG in
-                    help)
-                        usage
-                        exit 0
-                        ;;
-                    install)
-                        install
-                        exit 0
-                        ;;
-                    update)
-                        update
-                        exit 0
-                        ;;
-                    remove)
-                        remove
-                        exit 0
-                        ;;
-
-                    *)
-                        usage
-                        exit 1
-                        ;;
-                esac
+            p)
+                proxy_flag="-x "$OPTARG
                 ;;
+        esac
+
+        case $OPT in
             h)
                 usage
                 exit 0
                 ;;
             i)
-                install
+                install "$proxy_flag"
                 exit 0
                 ;;
             u)
@@ -217,7 +219,7 @@ main(){
                 ;;
         esac
     done
-    install
+    install "$proxy_flag"
 }
 
 main $@
