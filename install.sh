@@ -24,7 +24,6 @@ backup() {
 }
 
 create_symlinks() {
-
     if [ ! -e "$HOME/.vim" ];then
         mkdir "$HOME/.vim"
     fi
@@ -152,6 +151,7 @@ remove() {
     case $input in
         [yY][eR][sS]|[yY])
             rm -rf $HOME/.vim
+            msg "Done."
             exit 0
             ;;
         [nN][oO]|[nN])
@@ -163,8 +163,6 @@ remove() {
             exit 1
             ;;
     esac
-
-    msg "Done."
 }
 
 ##
