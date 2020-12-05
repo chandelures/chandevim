@@ -48,8 +48,6 @@
     " 关闭声音
     set noeb
     set vb
-    " 设置粘贴
-    set paste
     " 设置备份
     set nobackup
 

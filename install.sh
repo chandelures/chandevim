@@ -7,6 +7,7 @@ REPO_URL="https://github.com/chandelures/chandevim.git"
 VIM_PLUG_INSTALL_URL="https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
 VIM_PLUG_DIR="$HOME/.vim/autoload"
 VIM_DIR="$HOME/.vim"
+COC_PLUGINS="coc-snippets"
 
 ## basic function
 msg() {
@@ -94,6 +95,33 @@ update_plug() {
         "+qall"
 
     export SHELL="$shell"
+
+    if [ $? -ne 0 ]; then
+        msg "Update plugins Failed!"
+        exit 1
+    fi
+
+    msg "Update plugins Successful!"
+}
+
+install_coc_plug() {
+    local plugs="$COC_PLUGINS"
+    local shell="$SHELL"
+
+    export SHELL='/bin/sh'
+
+    vim \
+        "+CocInstall $plugs" \
+        "qall"
+
+    export SHELL='$shell'
+
+    if [ $? -ne 0 ]; then
+        msg "Install coc plugins Failed!"
+        exit 1
+    fi
+
+    msg "Install coc plugins Successful!"
 }
 
 ## install
@@ -122,6 +150,8 @@ install() {
     create_symlinks
 
     install_plug
+
+    install_coc_plug
 
     msg "Done."
 }
