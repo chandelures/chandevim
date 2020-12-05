@@ -2,4 +2,4 @@
 "
 " plug config
 " options: general, programming, markdown, tex, search
-let g:plug_group=['general', 'programming', 'tex']
+" let g:plug_group=['general', 'programming', 'tex']
