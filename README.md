@@ -13,14 +13,20 @@ $ cd chandevim
 $ ./install.sh
 ```
 
+use proxy
+
+```shell
+./install -p http://xxx:xxxx
+```
+
 ### Update
 
 ```shell
-$ ./install.sh --update
+$ ./install.sh -u
 ```
 
 ### Remove
 
 ```shell
-$ ./install.sh --remove
+$ ./install.sh -r
 ```
