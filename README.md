@@ -16,7 +16,7 @@ $ ./install.sh
 use proxy
 
 ```shell
-./install -p http://xxx:xxxx
+$ ./install -p http://xxx:xxxx
 ```
 
 ### Update

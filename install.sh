@@ -72,7 +72,6 @@ install_plug() {
 
     vim \
         "+PlugInstall" \
-        "+PlugClean" \
         "+qall"
 
     if [ $? -ne 0 ]; then
@@ -112,7 +111,7 @@ install_coc_plug() {
 
     vim \
         "+CocInstall $plugs" \
-        "qall"
+        "+qall"
 
     export SHELL='$shell'
 

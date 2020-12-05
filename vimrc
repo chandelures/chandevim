@@ -208,7 +208,7 @@
     " Autoformat {
         if isdirectory(expand("~/.vim/plugged/vim-autoformat"))
             noremap <leader>l :Autoformat<CR>
-            autocmd FileType vim,tex,json let b:autoformat_autoindent=0
+            autocmd FileType vim,tex,json,markdown let b:autoformat_autoindent=0
             au BufWrite * :Autoformat
         endif
     " }
