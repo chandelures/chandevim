@@ -33,12 +33,7 @@ create_symlinks() {
     ln -sf "$APP_PATH/vimrc.custom" "$VIM_DIR/vimrc.custom"
     ln -sf "$APP_PATH/vimrc.plugin" "$VIM_DIR/vimrc.plugin"
 
-    if [ $? -ne 0 ]; then
-        msg "Create symbol links Failed!"
-        exit 1
-    fi
-
-    msg "Create symbol links Successful!"
+    return $?
 }
 
 program_not_exists() {
@@ -57,13 +52,7 @@ install_plug_mgr() {
 
     curl $flag -fLo "$VIM_PLUG_DIR/plug.vim" --create-dirs $VIM_PLUG_INSTALL_URL
 
-    if [ $? -ne 0 ]; then
-        msg "Install plug manager Failed!"
-        exit 1
-    fi
-
-    msg "Install plug manager Successful!"
-
+    return $?
 }
 
 install_plug() {
@@ -74,14 +63,9 @@ install_plug() {
         "+PlugInstall" \
         "+qall"
 
-    if [ $? -ne 0 ]; then
-        msg "Install plugins Failed!"
-        exit 1
-    fi
-
-    msg "Install plugins Successful!"
-
     export SHELL="$shell"
+
+    return $?
 }
 
 update_plug() {
@@ -95,12 +79,7 @@ update_plug() {
 
     export SHELL="$shell"
 
-    if [ $? -ne 0 ]; then
-        msg "Update plugins Failed!"
-        exit 1
-    fi
-
-    msg "Update plugins Successful!"
+    return $?
 }
 
 install_coc_plug() {
@@ -115,12 +94,7 @@ install_coc_plug() {
 
     export SHELL='$shell'
 
-    if [ $? -ne 0 ]; then
-        msg "Install coc plugins Failed!"
-        exit 1
-    fi
-
-    msg "Install coc plugins Successful!"
+    return $?
 }
 
 ## install
@@ -146,11 +120,38 @@ install() {
 
     install_plug_mgr "$proxy_flag"
 
+    if [ $? -ne 0 ]; then
+        msg "Install plug manager Failed!"
+        exit 1
+    fi
+
+    msg "Install plug manager Successful!"
+
     create_symlinks
 
+    if [ $? -ne 0 ]; then
+        msg "Create symbol links Failed!"
+        exit 1
+    fi
+
+    msg "Create symbol links Successful!"
+
     install_plug
+    if [ $? -ne 0 ]; then
+        msg "Install plugins Failed!"
+        exit 1
+    fi
+
+    msg "Install plugins Successful!"
 
     install_coc_plug
+
+    if [ $? -ne 0 ]; then
+        msg "Install coc plugins Failed!"
+        exit 1
+    fi
+
+    msg "Install coc plugins Successful!"
 
     msg "Done."
 }
@@ -170,6 +171,13 @@ update() {
     git pull
 
     update_plug
+
+    if [ $? -ne 0 ]; then
+        msg "Update plugins Failed!"
+        exit 1
+    fi
+
+    msg "Update plugins Successful!"
 
     msg "Done."
 }
