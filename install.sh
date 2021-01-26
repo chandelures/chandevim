@@ -47,6 +47,18 @@ program_not_exists() {
     return 1
 }
 
+check_program() {
+    local programs=("$1")
+
+    for program in $programs;
+    do
+        if program_not_exists $program; then
+            msg "You don't have $program"
+            exit 1
+        fi
+    done
+}
+
 install_plug_mgr() {
     local flag=$1 || ""
 
@@ -90,7 +102,7 @@ install_coc_plug() {
 
     vim \
         "+CocInstall $plugs" \
-        "+qall"
+    	"+qall"
 
     export SHELL='$shell'
 
@@ -101,20 +113,7 @@ install_coc_plug() {
 install() {
     local proxy_flag=$1 || ""
 
-    if program_not_exists 'curl'; then
-        msg "You don't have curl."
-        return
-    fi
-
-    if program_not_exists 'vim'; then
-        msg "You don't have vim."
-        return
-    fi
-
-    if program_not_exists 'git'; then
-        msg "You don't have git."
-        return
-    fi
+    check_program 'curl vim git node npm'
 
     backup "$HOME/.vim"
 
@@ -158,15 +157,7 @@ install() {
 
 ## update
 update() {
-    if program_not_exists 'vim'; then
-        msg "You don't have vim."
-        return
-    fi
-
-    if program_not_exists 'git'; then
-        msg "You don't have git."
-        return
-    fi
+    check_program 'vim git'
 
     git pull
 
