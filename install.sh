@@ -2,16 +2,24 @@
 
 ## params
 app_name="chandevim"
+
 APP_PATH=`pwd`
+
 REPO_URL="https://github.com/chandelures/chandevim.git"
+
 VIM_PLUG_INSTALL_URL="https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
 VIM_PLUG_DIR="$HOME/.vim/autoload"
+
+VIMRC_URL="https://raw.githubusercontent.com/chandelures/chandevim/master/vimrc"
+VIMRC_PLUGIN_URL="https://raw.githubusercontent.com/chandelures/chandevim/master/vimrc.plugin"
+
 VIM_DIR="$HOME/.vim"
+
 COC_PLUGINS="coc-snippets"
 
 ## basic function
 msg() {
-    printf '%b\n' "$1" >&2
+    printf '[info] %b\n' "$1" >&2
 }
 
 ## tools
@@ -24,16 +32,17 @@ backup() {
     done
 }
 
-create_symlinks() {
-    if [ ! -e "$HOME/.vim" ];then
-        mkdir "$HOME/.vim"
+download_vimrc() {
+    local flag=$1 || ""
+    curl $flag -fLo "$VIM_DIR/vimrc" "$VIMRC_URL"
+    curl $flag -fLo "$VIM_DIR/vimrc.plugin" "$VIMRC_PLUGIN_URL"
+
+    if [ $? -ne 0 ]; then
+        msg "Download vim config file Failed."
+        exit 1
     fi
 
-    ln -sf "$APP_PATH/vimrc" "$VIM_DIR/vimrc"
-    ln -sf "$APP_PATH/vimrc.custom" "$VIM_DIR/vimrc.custom"
-    ln -sf "$APP_PATH/vimrc.plugin" "$VIM_DIR/vimrc.plugin"
-
-    return $?
+    msg "Download vim config file successful."
 }
 
 program_not_exists() {
@@ -47,24 +56,18 @@ program_not_exists() {
     return 1
 }
 
-check_program() {
-    local programs=("$1")
-
-    for program in $programs;
-    do
-        if program_not_exists $program; then
-            msg "You don't have $program"
-            exit 1
-        fi
-    done
-}
-
 install_plug_mgr() {
     local flag=$1 || ""
 
     curl $flag -fLo "$VIM_PLUG_DIR/plug.vim" --create-dirs $VIM_PLUG_INSTALL_URL
 
-    return $?
+    if [ $? -ne 0 ]; then
+        msg "Install plug manager Failed!"
+        exit 1
+    fi
+
+    msg "Install plug manager Successful!"
+
 }
 
 install_plug() {
@@ -73,11 +76,17 @@ install_plug() {
 
     vim \
         "+PlugInstall" \
+        "+PlugClean" \
         "+qall"
 
-    export SHELL="$shell"
+    if [ $? -ne 0 ]; then
+        msg "Install plugins Failed!"
+        exit 1
+    fi
 
-    return $?
+    msg "Install plugins Successful!"
+
+    export SHELL="$shell"
 }
 
 update_plug() {
@@ -91,7 +100,12 @@ update_plug() {
 
     export SHELL="$shell"
 
-    return $?
+    if [ $? -ne 0 ]; then
+        msg "Update plugins Failed!"
+        exit 1
+    fi
+
+    msg "Update plugins Successful!"
 }
 
 install_coc_plug() {
@@ -102,48 +116,9 @@ install_coc_plug() {
 
     vim \
         "+CocInstall $plugs" \
-    	"+qall"
+        "+qall"
 
     export SHELL='$shell'
-
-    return $?
-}
-
-## install
-install() {
-    local proxy_flag=$1 || ""
-
-    check_program 'curl vim git node npm'
-
-    backup "$HOME/.vim"
-
-    install_plug_mgr "$proxy_flag"
-
-    if [ $? -ne 0 ]; then
-        msg "Install plug manager Failed!"
-        exit 1
-    fi
-
-    msg "Install plug manager Successful!"
-
-    create_symlinks
-
-    if [ $? -ne 0 ]; then
-        msg "Create symbol links Failed!"
-        exit 1
-    fi
-
-    msg "Create symbol links Successful!"
-
-    install_plug
-    if [ $? -ne 0 ]; then
-        msg "Install plugins Failed!"
-        exit 1
-    fi
-
-    msg "Install plugins Successful!"
-
-    install_coc_plug
 
     if [ $? -ne 0 ]; then
         msg "Install coc plugins Failed!"
@@ -151,24 +126,57 @@ install() {
     fi
 
     msg "Install coc plugins Successful!"
+}
+
+## install
+install() {
+    local proxy_flag=$1 || ""
+
+    if program_not_exists 'curl'; then
+        msg "You don't have curl."
+        return
+    fi
+
+    if program_not_exists 'vim'; then
+        msg "You don't have vim."
+        return
+    fi
+
+    if program_not_exists 'git'; then
+        msg "You don't have git."
+        return
+    fi
+
+    backup "$HOME/.vim"
+
+    install_plug_mgr "$proxy_flag"
+
+    download_vimrc "$proxy_flag"
+
+    install_plug
+
+    install_coc_plug
 
     msg "Done."
 }
 
 ## update
 update() {
-    check_program 'vim git'
+    local proxy_flag=$1 || ""
 
-    git pull
-
-    update_plug
-
-    if [ $? -ne 0 ]; then
-        msg "Update plugins Failed!"
-        exit 1
+    if program_not_exists 'vim'; then
+        msg "You don't have vim."
+        return
     fi
 
-    msg "Update plugins Successful!"
+    if program_not_exists 'curl'; then
+        msg "You don't have curl."
+        return
+    fi
+
+    download_vimrc "$proxy_flag"
+
+    update_plug
 
     msg "Done."
 }
@@ -221,9 +229,6 @@ main(){
             p)
                 proxy_flag="-x "$OPTARG
                 ;;
-        esac
-
-        case $OPT in
             h)
                 usage
                 exit 0
@@ -233,7 +238,7 @@ main(){
                 exit 0
                 ;;
             u)
-                update
+                update "$proxy_flag"
                 exit 0
                 ;;
             r)
