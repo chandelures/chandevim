@@ -8,25 +8,23 @@ and it contains a script to install/update/remove the vim configuration
 ### Install
 
 ```shell
-$ git clone https://github.com/chandelures/chandevim
-$ cd chandevim
-$ ./install.sh
+bash -c "$(curl -L https://raw.githubusercontent.com/chandelures/chandevim/master/install.sh)"
 ```
 
 use proxy
 
 ```shell
-$ ./install -p http://xxx:xxxx
+bash -c "$(curl -L https://raw.githubusercontent.com/chandelures/chandevim/master/install.sh)" @ -p http://xxxx:xxxx
 ```
 
 ### Update
 
 ```shell
-$ ./install.sh -u
+bash -c "$(curl -L https://raw.githubusercontent.com/chandelures/chandevim/master/install.sh)" @ -u
 ```
 
 ### Remove
 
 ```shell
-$ ./install.sh -r
+bash -c "$(curl -L https://raw.githubusercontent.com/chandelures/chandevim/master/install.sh)" @ -r
 ```
