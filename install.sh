@@ -17,6 +17,8 @@ VIM_DIR="$HOME/.vim"
 
 COC_PLUGINS="coc-snippets"
 
+CURL="curl"
+
 ## basic function
 msg() {
     printf '[info] %b\n' "$1" >&2
@@ -33,9 +35,8 @@ backup() {
 }
 
 download_vimrc() {
-    local flag=$1 || ""
-    curl $flag -fLo "$VIM_DIR/vimrc" "$VIMRC_URL"
-    curl $flag -fLo "$VIM_DIR/vimrc.plugin" "$VIMRC_PLUGIN_URL"
+    $CURL $flag -fLo "$VIM_DIR/vimrc" "$VIMRC_URL"
+    $CURL $flag -fLo "$VIM_DIR/vimrc.plugin" "$VIMRC_PLUGIN_URL"
 
     if [ $? -ne 0 ]; then
         msg "Download vim config file Failed."
@@ -57,9 +58,7 @@ program_not_exists() {
 }
 
 install_plug_mgr() {
-    local flag=$1 || ""
-
-    curl $flag -fLo "$VIM_PLUG_DIR/plug.vim" --create-dirs $VIM_PLUG_INSTALL_URL
+    $CURL $flag -fLo "$VIM_PLUG_DIR/plug.vim" --create-dirs $VIM_PLUG_INSTALL_URL
 
     if [ $? -ne 0 ]; then
         msg "Install plug manager Failed!"
@@ -130,8 +129,6 @@ install_coc_plug() {
 
 ## install
 install() {
-    local proxy_flag=$1 || ""
-
     if program_not_exists 'curl'; then
         msg "You don't have curl."
         return
@@ -149,9 +146,9 @@ install() {
 
     backup "$HOME/.vim"
 
-    install_plug_mgr "$proxy_flag"
+    install_plug_mgr
 
-    download_vimrc "$proxy_flag"
+    download_vimrc
 
     install_plug
 
@@ -221,24 +218,22 @@ main(){
     local OPTIND
     local OPTARG
 
-    local proxy_flag=""
-
     while getopts ihurp:-: OPT;
     do
         case $OPT in
             p)
-                proxy_flag="-x "$OPTARG
+                export CURL="curl -x $OPTARG"
                 ;;
             h)
                 usage
                 exit 0
                 ;;
             i)
-                install "$proxy_flag"
+                install 
                 exit 0
                 ;;
             u)
-                update "$proxy_flag"
+                update
                 exit 0
                 ;;
             r)
@@ -251,7 +246,7 @@ main(){
                 ;;
         esac
     done
-    install "$proxy_flag"
+    install
 }
 
 main $@
