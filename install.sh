@@ -127,6 +127,20 @@ install_coc_plug() {
     export SHELL='$shell'
 }
 
+update_coc_plug() {
+    local shell="$SHELL"
+
+    export SHELL='/bin/sh'
+
+    vim \
+        "+CocUpdate" \
+        "+qall"
+    
+    process_check $? "Update coc plugins"
+
+    export SHELL='$shell'
+}
+
 ## install
 install() {
     programs_check "vim" "curl"
@@ -151,6 +165,8 @@ update() {
     download_vimrc 
 
     update_plug
+
+    update_coc_plug
 
     msg "Done."
 }
