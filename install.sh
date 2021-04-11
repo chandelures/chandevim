@@ -24,6 +24,10 @@ msg() {
     printf '[info] %b\n' "$1" >&2
 }
 
+err() {
+    printf '[error] %b\n' "$1" >&2
+}
+
 ## tools
 backup() {
     local backup_files=("#@")
@@ -58,7 +62,8 @@ programs_check() {
     for program in $programs;
     do
         if program_not_exists $program; then
-            msg "You don't have $program."
+            err "You don't have $program."
+            exit 1
         fi
     done
 }
@@ -68,7 +73,7 @@ process_check() {
     local process_name=$2
 
     if [ $1 -ne 0 ]; then
-        msg "$process_name Failed!"
+        err "$process_name Failed!"
         exit 1
     fi
 
