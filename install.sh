@@ -3,8 +3,6 @@
 ## params
 app_name="chandevim"
 
-APP_PATH=`pwd`
-
 REPO_URL="https://github.com/chandelures/chandevim.git"
 
 VIM_PLUG_INSTALL_URL="https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
@@ -30,7 +28,7 @@ err() {
 
 ## tools
 backup() {
-    local backup_files=("#@")
+    local backup_files=("$@")
 
     for backup_file in $backup_files;
     do
@@ -189,7 +187,7 @@ usage() {
     msg "    -h        Display this message"
     msg "    -p        Proxy setting"
     msg ""
-    msg "https://github.com/chandelures/chandevim"
+    msg $REPO_URL
 }
 
 ## main
