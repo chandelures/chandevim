@@ -194,16 +194,16 @@ remove() {
 
 ##
 usage() {
-    msg "USAGE:"
-    msg "    ./install.sh [parameter]"
-    msg "PARAMETER:"
-    msg "    -i        Install the $app_name"
-    msg "    -u        Update the $app_name"
-    msg "    -r        Remove the $app_name"
-    msg "    -h        Display this message"
-    msg "    -p        Proxy setting"
-    msg ""
-    msg $REPO_URL
+    echo "USAGE:"
+    echo "    ./install.sh [parameter]"
+    echo "PARAMETER:"
+    echo "    -i        Install the $app_name"
+    echo "    -u        Update the $app_name"
+    echo "    -r        Remove the $app_name"
+    echo "    -h        Display this message"
+    echo "    -p        Proxy setting"
+    echo ""
+    echo $REPO_URL
 }
 
 ## main
