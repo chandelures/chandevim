@@ -11,12 +11,6 @@ and it contains a script to install/update/remove the vim configuration
 bash -c "$(curl -L https://raw.githubusercontent.com/chandelures/chandevim/master/install.sh)"
 ```
 
-use proxy
-
-```shell
-bash -c "$(curl -L https://raw.githubusercontent.com/chandelures/chandevim/master/install.sh)" @ -p http://xxxx:xxxx
-```
-
 ### Update
 
 ```shell

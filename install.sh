@@ -201,7 +201,6 @@ usage() {
     echo "    -u        Update the $app_name"
     echo "    -r        Remove the $app_name"
     echo "    -h        Display this message"
-    echo "    -p        Proxy setting"
     echo ""
     echo $REPO_URL
 }
@@ -214,9 +213,6 @@ main(){
     while getopts ihurp:-: OPT;
     do
         case $OPT in
-            p)
-                export CURL="curl -x $OPTARG"
-                ;;
             h)
                 usage
                 exit 0
