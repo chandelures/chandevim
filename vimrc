@@ -122,6 +122,13 @@ if isdirectory(expand("~/.vim/plugged/nerdtree"))
     let NERDTreeKeepTreeInNewTab=1
 endif
 
+" Asynccomplete
+if isdirectory(expand("~/.vim/plugged/asyncomplete.vim"))
+    inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+    inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+    inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
+endif
+
 " Vim-colors-solarized
 if isdirectory(expand("~/.vim/plugged/awesome-vim-colorschemes"))
     let g:solarized_termtrans=1
