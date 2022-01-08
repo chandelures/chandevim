@@ -16,9 +16,6 @@
 " }
 
 " General Config {
-    " 设置语言
-    set langmenu=zh_CN.UTF-8
-
     " 设置鼠标
     set mouse=a
     set selection=exclusive
@@ -26,9 +23,6 @@
 
     " 检测文件外部更改
     set autoread
-
-    " 加快响应速度
-    set updatetime=300
 
     " 显示输入的命令
     set showcmd
@@ -41,15 +35,11 @@
     set fileencoding=utf-8
     scriptencoding utf-8
 
-    " 设置历史记录数量
-    set history=1000
     " 关闭拼写检查
     set nospell
     " 关闭声音
     set noeb
     set vb
-    " 设置备份
-    set nobackup
 
     " 自动跳转到上次修改的位置
     if has("autocmd")
@@ -101,20 +91,18 @@
     set nowrap
 
     " 缩进设置
-    set cindent
-    set autoindent
     set smartindent
 
-    " 窗口设置
-    set splitright
-    set splitbelow
-
     " tab设置
+    set smarttab
     set expandtab
     set tabstop=4
     set shiftwidth=4
     set softtabstop=4
-    set smarttab
+
+    " 窗口设置
+    set splitright
+    set splitbelow
 " }
 
 " Mappings {
@@ -153,31 +141,6 @@
     " Rainbow{
         if isdirectory(expand("~/.vim/plugged/rainbow"))
             let g:rainbow_active = 1
-        endif
-    " }
-
-    " Coc.nvim {
-        if isdirectory(expand("~/.vim/plugged/coc.nvim"))
-            let g:coc_disable_startup_warning = 1
-            " 映射Tab触发自动补全
-            inoremap <silent><expr> <TAB>
-                        \ pumvisible() ? "\<C-n>" :
-                        \ <SID>check_back_space() ? "\<TAB>" :
-                        \ coc#refresh()
-            inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-            function! s:check_back_space() abort
-                let col = col('.') - 1
-                return !col || getline('.')[col - 1]  =~# '\s'
-            endfunction
-
-            " 映射enter选择补全
-            if exists('*complete_info')
-                inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
-                            \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-            else
-                inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-            endif
         endif
     " }
 
