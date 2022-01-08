@@ -19,7 +19,6 @@
 
     " Programming {
         if count(g:plug_group, 'programming')
-            Plug 'neoclide/coc.nvim', {'branch': 'release'}
             Plug 'honza/vim-snippets'
             Plug 'Chiel92/vim-autoformat'
             Plug 'tpope/vim-fugitive'
@@ -38,12 +37,6 @@
     " Tex {
         if count(g:plug_group, 'tex')
             Plug 'lervag/vimtex'
-        endif
-    " }
-
-    " Search {
-        if count(g:plug_group, 'search')
-            Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
         endif
     " }
 

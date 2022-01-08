@@ -13,8 +13,6 @@ VIMRC_PLUGIN_URL="https://raw.githubusercontent.com/chandelures/chandevim/master
 
 VIM_DIR="$HOME/.vim"
 
-COC_PLUGINS="coc-snippets"
-
 CURL="curl"
 
 ## basic function
@@ -112,35 +110,6 @@ update_plug() {
     export SHELL="$shell"
 }
 
-install_coc_plug() {
-    local plugs="$COC_PLUGINS"
-    local shell="$SHELL"
-
-    export SHELL='/bin/sh'
-
-    vim \
-        "+CocInstall $plugs" \
-        "+qall"
-
-    process_check $? "Install coc plugins"
-
-    export SHELL='$shell'
-}
-
-update_coc_plug() {
-    local shell="$SHELL"
-
-    export SHELL='/bin/sh'
-
-    vim \
-        "+CocUpdate" \
-        "+qall"
-    
-    process_check $? "Update coc plugins"
-
-    export SHELL='$shell'
-}
-
 ## install
 install() {
     programs_check "vim" "curl"
@@ -153,8 +122,6 @@ install() {
 
     install_plug
 
-    install_coc_plug
-
     msg "Done."
 }
 
@@ -165,8 +132,6 @@ update() {
     download_vimrc 
 
     update_plug
-
-    update_coc_plug
 
     msg "Done."
 }
@@ -210,7 +175,7 @@ main(){
     local OPTIND
     local OPTARG
 
-    while getopts ihurp:-: OPT;
+    while getopts ihur OPT;
     do
         case $OPT in
             h)
@@ -235,7 +200,7 @@ main(){
                 ;;
         esac
     done
-    install
+    usage
 }
 
 main $@
