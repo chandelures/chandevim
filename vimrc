@@ -84,7 +84,6 @@ set laststatus=2
 
 
 " Formatting
-
 " 折叠设置
 set foldenable
 
@@ -168,4 +167,3 @@ endif
 if isdirectory(expand("~/.vim/plugged/vim-autoformat"))
     noremap <leader>l :Autoformat<CR>
 endif
-
