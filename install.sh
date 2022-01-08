@@ -113,26 +113,18 @@ update_plug() {
 ## install
 install() {
     programs_check "vim" "curl"
-
-    backup "$HOME/.vim"
-
+    backup "$HOME/.vim/.vimrc"
     install_plug_mgr
-
     download_vimrc
-
     install_plug
-
     msg "Done."
 }
 
 ## update
 update() {
     programs_check "vim" "curl"
-
     download_vimrc 
-
     update_plug
-
     msg "Done."
 }
 
