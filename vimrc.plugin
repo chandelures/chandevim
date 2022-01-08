@@ -19,6 +19,10 @@ endif
 
 " Programming
 if count(g:plug_group, 'programming')
+    Plug 'prabirshrestha/vim-lsp'
+    Plug 'mattn/vim-lsp-settings'
+    Plug 'prabirshrestha/asyncomplete.vim'
+    Plug 'prabirshrestha/asyncomplete-lsp.vim'
     Plug 'honza/vim-snippets'
     Plug 'Chiel92/vim-autoformat'
     Plug 'tpope/vim-fugitive'
