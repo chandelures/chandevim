@@ -8,6 +8,7 @@
     " General {
         if count(g:plug_group, 'general')
             Plug 'scrooloose/nerdtree'
+            Plug 'kien/ctrlp.vim'
             Plug 'jiangmiao/auto-pairs'
             Plug 'rafi/awesome-vim-colorschemes'
             Plug 'vim-airline/vim-airline'
