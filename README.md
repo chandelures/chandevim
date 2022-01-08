@@ -8,7 +8,7 @@ and it contains a script to install/update/remove the vim configuration
 ### Install
 
 ```shell
-bash -c "$(curl -L https://raw.githubusercontent.com/chandelures/chandevim/master/install.sh)"
+bash -c "$(curl -L https://raw.githubusercontent.com/chandelures/chandevim/master/install.sh)" @ -i
 ```
 
 ### Update
