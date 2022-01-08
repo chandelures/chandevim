@@ -1,51 +1,44 @@
-" Plugins Setup {
-    call plug#begin('~/.vim/plugged')
+" Plugins Setup
+call plug#begin('~/.vim/plugged')
 
-    if !exists('g:plug_group')
-        let g:plug_group=['general', 'programming']
-    endif
+if !exists('g:plug_group')
+    let g:plug_group=['general', 'programming']
+endif
 
-    " General {
-        if count(g:plug_group, 'general')
-            Plug 'scrooloose/nerdtree'
-            Plug 'kien/ctrlp.vim'
-            Plug 'jiangmiao/auto-pairs'
-            Plug 'rafi/awesome-vim-colorschemes'
-            Plug 'vim-airline/vim-airline'
-            Plug 'vim-airline/vim-airline-themes'
-            Plug 'luochen1990/rainbow'
-            Plug 'tpope/vim-surround'
-        endif
-    " }
+" General
+if count(g:plug_group, 'general')
+    Plug 'scrooloose/nerdtree'
+    Plug 'jiangmiao/auto-pairs'
+    Plug 'rafi/awesome-vim-colorschemes'
+    Plug 'vim-airline/vim-airline'
+    Plug 'vim-airline/vim-airline-themes'
+    Plug 'luochen1990/rainbow'
+    Plug 'tpope/vim-surround'
+endif
 
-    " Programming {
-        if count(g:plug_group, 'programming')
-            Plug 'honza/vim-snippets'
-            Plug 'Chiel92/vim-autoformat'
-            Plug 'tpope/vim-fugitive'
-        endif
-    " }
+" Programming
+if count(g:plug_group, 'programming')
+    Plug 'honza/vim-snippets'
+    Plug 'Chiel92/vim-autoformat'
+    Plug 'tpope/vim-fugitive'
+endif
 
-    " Markdown {
-        if count(g:plug_group, 'markdown')
-            Plug 'godlygeek/tabular'
-            Plug 'plasticboy/vim-markdown'
-            Plug 'mzlogin/vim-markdown-toc'
-            Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
-        endif
-    " }
+" Markdown
+if count(g:plug_group, 'markdown')
+    Plug 'godlygeek/tabular'
+    Plug 'plasticboy/vim-markdown'
+    Plug 'mzlogin/vim-markdown-toc'
+    Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+endif
 
-    " Tex {
-        if count(g:plug_group, 'tex')
-            Plug 'lervag/vimtex'
-        endif
-    " }
+" Tex
+if count(g:plug_group, 'tex')
+    Plug 'lervag/vimtex'
+endif
 
-    call plug#end()
-" }
+call plug#end()
 
-" Custom Config {
-    if filereadable(expand("~/.vim/vimrc.plugin.custom"))
-        source ~/.vim/vimrc.plugin.custom
-    endif
-" }
+" Custom Config
+if filereadable(expand("~/.vim/vimrc.plugin.custom"))
+    source ~/.vim/vimrc.plugin.custom
+endif
